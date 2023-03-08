@@ -27,12 +27,10 @@ async function addEntry(req, res) {
         if (dniUnique[0].length !== 0) {
             return res.status(404).json({ message: 'Existe un registro con el mismo DNI' });
         }
-        else {
-            await conn.query('INSERT INTO Entrenadores SET ?', [newEntry]);
-            return res.json({
-                message: 'Entrada de Entrenador añadida'
-            });
-        }
+        await conn.query('INSERT INTO Entrenadores SET ?', [newEntry]);
+        return res.json({
+            message: 'Entrada de Entrenador añadida'
+        });
     }
     catch (e) {
         let message;
@@ -52,9 +50,7 @@ async function getIdEntry(req, res) {
         if (getId[0].length === 0) {
             return res.status(404).json({ message: 'El registro con el id especificado no existe' });
         }
-        else {
-            return res.json(getId[0]);
-        }
+        return res.json(getId[0]);
     }
     catch (e) {
         let message;
@@ -75,11 +71,9 @@ async function deleteIdEntry(req, res) {
         if (deleteId[0].length === 0) {
             return res.status(404).json({ message: 'El registro con el id especificado no existe' });
         }
-        else {
-            return res.json({
-                message: 'Entrada de Entrenador eliminada'
-            });
-        }
+        return res.json({
+            message: 'Entrada de Entrenador eliminada'
+        });
     }
     catch (e) {
         let message;
@@ -96,22 +90,20 @@ async function updateIdEntry(req, res) {
         const { id } = req.params;
         const updateEntry = req.body;
         const conn = await (0, conexion_1.connect)();
-        const dniUnique = await conn.query('SELECT * FROM Entrenadores WHERE DNI = ?', [updateEntry.DNI]);
         const updateId = await conn.query('SELECT * FROM Entrenadores WHERE EntrenadorId = ?', [id]);
         if (updateId[0].length === 0) {
             return res.status(404).json({ message: 'El registro con el id especificado no existe' });
         }
-        else {
-            if (dniUnique.length !== 0) {
+        if (typeof updateEntry.DNI === 'string') {
+            const dniUnique = await conn.query('SELECT * FROM Entrenadores WHERE DNI = ?', [updateEntry.DNI]);
+            if (dniUnique.length === 0) {
                 return res.status(404).json({ message: 'Existe un registro con el mismo DNI' });
             }
-            else {
-                await conn.query('UPDATE Entrenadores set ? WHERE EntrenadorId = ?', [updateEntry, id]);
-                return res.json({
-                    message: 'Entrada de Entrenador actualizada'
-                });
-            }
         }
+        await conn.query('UPDATE Entrenadores set ? WHERE EntrenadorId = ?', [updateEntry, id]);
+        return res.json({
+            message: 'Entrada de Entrenador actualizada'
+        });
     }
     catch (e) {
         let message;

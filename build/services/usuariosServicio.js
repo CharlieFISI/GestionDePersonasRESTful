@@ -48,6 +48,10 @@ async function addEntry(req, res) {
         const newEntry = (0, utils_1.addUsuarioEntry)(req.body);
         newEntry.Contrasenia = crypto.SHA512(newEntry.Contrasenia).toString();
         const conn = await (0, conexion_1.connect)();
+        const dniUnique = await conn.query('SELECT * FROM Usuarios WHERE DNI = ?', [newEntry.DNI]);
+        if (dniUnique[0].length !== 0) {
+            return res.status(404).json({ message: 'Existe un registro con el mismo DNI' });
+        }
         await conn.query('INSERT INTO Usuarios SET ?', [newEntry]);
         return res.json({
             message: 'Entrada de Usuario añadida'
@@ -71,9 +75,7 @@ async function getIdEntry(req, res) {
         if (getId[0].length === 0) {
             return res.status(404).json({ message: 'El registro con el id especificado no existe' });
         }
-        else {
-            return res.json(getId[0]);
-        }
+        return res.json(getId[0]);
     }
     catch (e) {
         let message;
@@ -94,11 +96,9 @@ async function deleteIdEntry(req, res) {
         if (deleteId[0].length === 0) {
             return res.status(404).json({ message: 'El registro con el id especificado no existe' });
         }
-        else {
-            return res.json({
-                message: 'Entrada de Usuario eliminada'
-            });
-        }
+        return res.json({
+            message: 'Entrada de Usuario eliminada'
+        });
     }
     catch (e) {
         let message;
@@ -121,11 +121,9 @@ async function updateIdEntry(req, res) {
         if (updateId[0].length === 0) {
             return res.status(404).json({ message: 'El registro con el id especificado no existe' });
         }
-        else {
-            return res.json({
-                message: 'Entrada de Usuario actualizada'
-            });
-        }
+        return res.json({
+            message: 'Entrada de Usuario actualizada'
+        });
     }
     catch (e) {
         let message;

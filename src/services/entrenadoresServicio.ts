@@ -84,8 +84,8 @@ export async function updateIdEntry (req: Request, res: Response): Promise<Respo
       return res.status(404).json({ message: 'El registro con el id especificado no existe' })
     }
     if (typeof updateEntry.DNI === 'string') {
-      const dniUnique = await conn.query('SELECT * FROM Entrenadores WHERE DNI = ?', [updateEntry.DNI]) as RowDataPacket[]
-      if (dniUnique.length !== 0) {
+      const [DNIUnique] = await conn.query('SELECT EntrenadorId FROM Entrenadores WHERE DNI = ?', [updateEntry.DNI]) as RowDataPacket[]
+      if (DNIUnique.length !== 0 && DNIUnique.EntrenadorId !== updateEntry.EntrenadorId) {
         return res.status(404).json({ message: 'Existe un registro con el mismo DNI' })
       }
     }
