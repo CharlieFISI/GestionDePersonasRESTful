@@ -23,6 +23,10 @@ export async function addEntry (req: Request, res: Response): Promise<Response> 
     const newEntry: UsuarioEntryWithoutIdAndDate = addUsuarioEntry(req.body)
     newEntry.Contrasenia = crypto.SHA512(newEntry.Contrasenia).toString()
     const conn = await connect()
+    const dniUnique = await conn.query('SELECT * FROM Usuarios WHERE DNI = ?', [newEntry.DNI]) as RowDataPacket[]
+    if (dniUnique[0].length !== 0) {
+      return res.status(404).json({ message: 'Existe un registro con el mismo DNI' })
+    }
     await conn.query('INSERT INTO Usuarios SET ?', [newEntry])
     return res.json({
       message: 'Entrada de Usuario añadida'
@@ -42,9 +46,8 @@ export async function getIdEntry (req: Request, res: Response): Promise<Response
     const getId = await conn.query('SELECT * FROM Usuarios WHERE UsuarioId = ?', [id]) as RowDataPacket[]
     if (getId[0].length === 0) {
       return res.status(404).json({ message: 'El registro con el id especificado no existe' })
-    } else {
-      return res.json(getId[0])
     }
+    return res.json(getId[0])
   } catch (e) {
     let message
     if (e instanceof Error) message = e.message
@@ -61,11 +64,10 @@ export async function deleteIdEntry (req: Request, res: Response): Promise<Respo
     await conn.query('DELETE FROM Usuarios WHERE UsuarioId = ?', [id])
     if (deleteId[0].length === 0) {
       return res.status(404).json({ message: 'El registro con el id especificado no existe' })
-    } else {
-      return res.json({
-        message: 'Entrada de Usuario eliminada'
-      })
     }
+    return res.json({
+      message: 'Entrada de Usuario eliminada'
+    })
   } catch (e) {
     let message
     if (e instanceof Error) message = e.message
@@ -84,11 +86,10 @@ export async function updateIdEntry (req: Request, res: Response): Promise<Respo
     await conn.query('UPDATE Usuarios set ? WHERE UsuarioId = ?', [updateEntry, id])
     if (updateId[0].length === 0) {
       return res.status(404).json({ message: 'El registro con el id especificado no existe' })
-    } else {
-      return res.json({
-        message: 'Entrada de Usuario actualizada'
-      })
     }
+    return res.json({
+      message: 'Entrada de Usuario actualizada'
+    })
   } catch (e) {
     let message
     if (e instanceof Error) message = e.message
