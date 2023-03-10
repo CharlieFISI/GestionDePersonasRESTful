@@ -37,7 +37,7 @@ export async function addEntry (req: Request, res: Response): Promise<Response> 
   }
 }
 
-export async function getIdEntry (req: Request, res: Response): Promise<Response> {
+/* export async function getIdEntry (req: Request, res: Response): Promise<Response> {
   try {
     const { id } = req.params
     const conn = await connect()
@@ -52,7 +52,7 @@ export async function getIdEntry (req: Request, res: Response): Promise<Response
     else message = String(e)
     return res.status(400).send(message)
   }
-}
+} */
 
 export async function deleteIdEntry (req: Request, res: Response): Promise<Response> {
   try {
@@ -93,6 +93,23 @@ export async function updateIdEntry (req: Request, res: Response): Promise<Respo
     return res.json({
       message: 'Entrada de Cliente actualizada'
     })
+  } catch (e) {
+    let message
+    if (e instanceof Error) message = e.message
+    else message = String(e)
+    return res.status(400).send(message)
+  }
+}
+
+export async function getDNIEntry (req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params
+    const conn = await connect()
+    const getId = await conn.query('SELECT ClienteId, DNI, Nombre, Apellido FROM Clientes WHERE DNI = ?', [id]) as RowDataPacket[]
+    if (getId[0].length === 0) {
+      return res.status(404).json({ message: 'El registro con el DNI especificado no existe' })
+    }
+    return res.json(getId[0])
   } catch (e) {
     let message
     if (e instanceof Error) message = e.message

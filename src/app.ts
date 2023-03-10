@@ -1,10 +1,14 @@
 import express, { Application } from 'express'
-
+import cors from 'cors'
 import indexRouter from './index'
 import clienteRouter from './routes/clientes'
 import entrenadorRouter from './routes/entrenadores'
 import usuarioRouter from './routes/usuarios'
 
+const allowedOrigins = ['http://localhost:3000']
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+}
 export class App {
   private readonly app: Application
 
@@ -21,6 +25,7 @@ export class App {
 
   middlewares (): void {
     this.app.use(express.json())
+    this.app.use(cors(options))
   }
 
   routes (): void {

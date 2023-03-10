@@ -11,7 +11,7 @@ router.route('/')
     .get(clientesServicio_1.getAllEntries)
     .post(clientesServicio_1.addEntry);
 router.route('/:id')
-    .get(clientesServicio_1.getIdEntry)
+    .get(clientesServicio_1.getDNIEntry)
     .delete(clientesServicio_1.deleteIdEntry)
     .put(clientesServicio_1.updateIdEntry);
 exports.default = router;

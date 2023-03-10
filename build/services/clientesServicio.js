@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateIdEntry = exports.deleteIdEntry = exports.getIdEntry = exports.addEntry = exports.getAllEntries = void 0;
+exports.getDNIEntry = exports.updateIdEntry = exports.deleteIdEntry = exports.addEntry = exports.getAllEntries = void 0;
 const conexion_1 = require("../conexion");
 const utils_1 = require("../utils");
 async function getAllEntries(_req, res) {
@@ -42,26 +42,22 @@ async function addEntry(req, res) {
     }
 }
 exports.addEntry = addEntry;
-async function getIdEntry(req, res) {
-    try {
-        const { id } = req.params;
-        const conn = await (0, conexion_1.connect)();
-        const getId = await conn.query('SELECT * FROM Clientes WHERE ClienteId = ?', [id]);
-        if (getId[0].length === 0) {
-            return res.status(404).json({ message: 'El registro con el id especificado no existe' });
-        }
-        return res.json(getId[0]);
+/* export async function getIdEntry (req: Request, res: Response): Promise<Response> {
+  try {
+    const { id } = req.params
+    const conn = await connect()
+    const getId = await conn.query('SELECT * FROM Clientes WHERE ClienteId = ?', [id]) as RowDataPacket[]
+    if (getId[0].length === 0) {
+      return res.status(404).json({ message: 'El registro con el id especificado no existe' })
     }
-    catch (e) {
-        let message;
-        if (e instanceof Error)
-            message = e.message;
-        else
-            message = String(e);
-        return res.status(400).send(message);
-    }
-}
-exports.getIdEntry = getIdEntry;
+    return res.json(getId[0])
+  } catch (e) {
+    let message
+    if (e instanceof Error) message = e.message
+    else message = String(e)
+    return res.status(400).send(message)
+  }
+} */
 async function deleteIdEntry(req, res) {
     try {
         const { id } = req.params;
@@ -115,3 +111,23 @@ async function updateIdEntry(req, res) {
     }
 }
 exports.updateIdEntry = updateIdEntry;
+async function getDNIEntry(req, res) {
+    try {
+        const { id } = req.params;
+        const conn = await (0, conexion_1.connect)();
+        const getId = await conn.query('SELECT ClienteId, DNI, Nombre, Apellido FROM Clientes WHERE DNI = ?', [id]);
+        if (getId[0].length === 0) {
+            return res.status(404).json({ message: 'El registro con el DNI especificado no existe' });
+        }
+        return res.json(getId[0]);
+    }
+    catch (e) {
+        let message;
+        if (e instanceof Error)
+            message = e.message;
+        else
+            message = String(e);
+        return res.status(400).send(message);
+    }
+}
+exports.getDNIEntry = getDNIEntry;
