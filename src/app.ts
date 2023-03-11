@@ -1,8 +1,10 @@
 import express, { Application } from 'express'
+import cors from 'cors'
 import indexRouter from './index'
 import clienteRouter from './routes/clientes'
 import entrenadorRouter from './routes/entrenadores'
 import usuarioRouter from './routes/usuarios'
+
 export class App {
   private readonly app: Application
 
@@ -19,6 +21,9 @@ export class App {
 
   middlewares (): void {
     this.app.use(express.json())
+    this.app.use(cors({
+      origin: 'https://titaniumgym.azurewebsites.net/'
+    }))
   }
 
   routes (): void {

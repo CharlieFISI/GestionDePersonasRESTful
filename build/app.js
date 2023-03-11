@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const index_1 = __importDefault(require("./index"));
 const clientes_1 = __importDefault(require("./routes/clientes"));
 const entrenadores_1 = __importDefault(require("./routes/entrenadores"));
@@ -22,6 +23,9 @@ class App {
     }
     middlewares() {
         this.app.use(express_1.default.json());
+        this.app.use((0, cors_1.default)({
+            origin: 'https://titaniumgym.azurewebsites.net/'
+        }));
     }
     routes() {
         this.app.use(index_1.default);
