@@ -30,9 +30,9 @@ export class App {
 
   routes (): void {
     this.app.use(indexRouter)
-    this.app.use('/api/clientes', clienteRouter)
-    this.app.use('/api/entrenadores', entrenadorRouter)
-    this.app.use('/api/usuarios', usuarioRouter)
+    this.app.use('/rs-ne-gestion-de-personas/servicio-de-clientes/v1/clientes', clienteRouter)
+    this.app.use('/rs-ne-gestion-de-personas/servicio-de-entrenadores/v1/entrenadores', entrenadorRouter)
+    this.app.use('/rs-ne-gestion-de-personas/servicio-de-usuarios/v1/usuarios', usuarioRouter)
   }
 
   async listen (): Promise<void> {
