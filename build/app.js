@@ -24,7 +24,7 @@ class App {
     middlewares() {
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)({
-            origin: 'https://titaniumgym.azurewebsites.net/'
+            origin: 'https://titaniumgym.azurewebsites.net'
         }));
     }
     routes() {
