@@ -15,7 +15,7 @@ const parseNombre = (stringFromRequest) => {
         message = 'Nombre(s) tiene pocos caracteres';
     }
     while (i < stringFromRequest.length && flag) {
-        if (isInt(Number(stringFromRequest[i]))) {
+        if (stringFromRequest[i] !== ' ' && isInt(Number(stringFromRequest[i]))) {
             flag = false;
             message = 'Nombre(s) no debe contener numeros';
         }
@@ -44,7 +44,7 @@ const parseApellido = (stringFromRequest) => {
         message = 'Apellidos tiene pocos caracteres';
     }
     while (i < stringFromRequest.length && flag) {
-        if (isInt(Number(stringFromRequest[i]))) {
+        if (stringFromRequest[i] !== ' ' && isInt(Number(stringFromRequest[i]))) {
             flag = false;
             message = 'Apellidos no debe contener numeros';
         }
@@ -69,13 +69,13 @@ const parseEmail = (stringFromRequest) => {
         message = 'Email inexistente o incorrecto';
     }
     if (stringFromRequest.length < 8) {
-        message = 'Email tiene pocos caracteres';
         flag = false;
+        message = 'Email tiene pocos caracteres';
     }
     while (i < stringFromRequest.length && flag) {
-        if (isInt(Number(stringFromRequest[i]))) {
+        if (stringFromRequest[i] === ' ') {
             flag = false;
-            message = 'Email no debe contener numeros';
+            message = 'Email no debe contener espacios';
         }
         if (regex.test(stringFromRequest[i])) {
             flag = false;
