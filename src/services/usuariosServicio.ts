@@ -24,9 +24,11 @@ export async function addEntry (req: Request, res: Response): Promise<Response> 
     newEntry.Contrasenia = crypto.SHA512(newEntry.Contrasenia).toString()
     const conn = await connect()
     const dniUnique = await conn.query('SELECT * FROM Usuarios WHERE DNI = ?', [newEntry.DNI]) as RowDataPacket[]
-    if (dniUnique[0].length !== 0) {
-      return res.status(404).json({ message: 'Existe un registro con el mismo DNI' })
-    }
+    const phoneUnique = await conn.query('SELECT * FROM Usuarios WHERE Telefono = ?', [newEntry.Telefono]) as RowDataPacket[]
+    const emailUnique = await conn.query('SELECT * FROM Usuarios WHERE Email = ?', [newEntry.Email]) as RowDataPacket[]
+    if (dniUnique[0].length !== 0) return res.status(404).json({ message: 'Existe un usuario con el mismo DNI' })
+    if (phoneUnique[0].length !== 0) return res.status(404).json({ message: 'Existe un usuario con el mismo Telefono' })
+    if (emailUnique[0].length !== 0) return res.status(404).json({ message: 'Existe un usuario con el mismo Email' })
     await conn.query('INSERT INTO Usuarios SET ?', [newEntry])
     return res.json({
       message: 'Entrada de Usuario añadida'

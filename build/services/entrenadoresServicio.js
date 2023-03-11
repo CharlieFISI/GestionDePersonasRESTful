@@ -24,9 +24,14 @@ async function addEntry(req, res) {
         const newEntry = (0, utils_1.addEntrenadorEntry)(req.body);
         const conn = await (0, conexion_1.connect)();
         const dniUnique = await conn.query('SELECT * FROM Entrenadores WHERE DNI = ?', [newEntry.DNI]);
-        if (dniUnique[0].length !== 0) {
-            return res.status(404).json({ message: 'Existe un registro con el mismo DNI' });
-        }
+        const phoneUnique = await conn.query('SELECT * FROM Entrenadores WHERE Telefono = ?', [newEntry.Telefono]);
+        const emailUnique = await conn.query('SELECT * FROM Entrenadores WHERE Email = ?', [newEntry.Email]);
+        if (dniUnique[0].length !== 0)
+            return res.status(404).json({ message: 'Existe un entrenador con el mismo DNI' });
+        if (phoneUnique[0].length !== 0)
+            return res.status(404).json({ message: 'Existe un entrenador con el mismo Telefono' });
+        if (emailUnique[0].length !== 0)
+            return res.status(404).json({ message: 'Existe un entrenador con el mismo Email' });
         await conn.query('INSERT INTO Entrenadores SET ?', [newEntry]);
         return res.json({
             message: 'Entrada de Entrenador añadida'
