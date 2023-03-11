@@ -10,6 +10,10 @@ const index_1 = __importDefault(require("./index"));
 const clientes_1 = __importDefault(require("./routes/clientes"));
 const entrenadores_1 = __importDefault(require("./routes/entrenadores"));
 const usuarios_1 = __importDefault(require("./routes/usuarios"));
+const allowedOrigins = ['192.168.0.123', 'https://titaniumgym.azurewebsites.net'];
+const options = {
+    origin: allowedOrigins
+};
 class App {
     constructor(port) {
         this.port = port;
@@ -20,6 +24,7 @@ class App {
     }
     settings() {
         this.app.set('port', this.port);
+        this.app.use((0, cors_1.default)(options));
     }
     middlewares() {
         this.app.use(express_1.default.json());
@@ -29,9 +34,9 @@ class App {
     }
     routes() {
         this.app.use(index_1.default);
-        this.app.use('/servicio-de-clientes/v1/clientes', clientes_1.default);
-        this.app.use('/servicio-de-entrenadores/v1/entrenadores', entrenadores_1.default);
-        this.app.use('/servicio-de-usuarios/v1/usuarios', usuarios_1.default);
+        this.app.use('/api-ux-gestion-de-personas/servicio-de-clientes/v1/clientes', clientes_1.default);
+        this.app.use('/api-ux-gestion-de-personas/servicio-de-entrenadores/v1/entrenadores', entrenadores_1.default);
+        this.app.use('/api-ux-gestion-de-personas/servicio-de-usuarios/v1/usuarios', usuarios_1.default);
     }
     async listen() {
         await this.app.listen(this.port);

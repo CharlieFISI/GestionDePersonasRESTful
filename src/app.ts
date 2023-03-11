@@ -5,6 +5,11 @@ import clienteRouter from './routes/clientes'
 import entrenadorRouter from './routes/entrenadores'
 import usuarioRouter from './routes/usuarios'
 
+const allowedOrigins = ['192.168.0.123', 'https://titaniumgym.azurewebsites.net']
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+}
+
 export class App {
   private readonly app: Application
 
@@ -17,6 +22,7 @@ export class App {
 
   settings (): void {
     this.app.set('port', this.port)
+    this.app.use(cors(options))
   }
 
   middlewares (): void {
@@ -28,9 +34,9 @@ export class App {
 
   routes (): void {
     this.app.use(indexRouter)
-    this.app.use('/servicio-de-clientes/v1/clientes', clienteRouter)
-    this.app.use('/servicio-de-entrenadores/v1/entrenadores', entrenadorRouter)
-    this.app.use('/servicio-de-usuarios/v1/usuarios', usuarioRouter)
+    this.app.use('/api-ux-gestion-de-personas/servicio-de-clientes/v1/clientes', clienteRouter)
+    this.app.use('/api-ux-gestion-de-personas/servicio-de-entrenadores/v1/entrenadores', entrenadorRouter)
+    this.app.use('/api-ux-gestion-de-personas/servicio-de-usuarios/v1/usuarios', usuarioRouter)
   }
 
   async listen (): Promise<void> {
