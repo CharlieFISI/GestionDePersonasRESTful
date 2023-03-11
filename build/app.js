@@ -24,13 +24,10 @@ class App {
     }
     settings() {
         this.app.set('port', this.port);
-        this.app.use((0, cors_1.default)(options));
     }
     middlewares() {
         this.app.use(express_1.default.json());
-        this.app.use((0, cors_1.default)({
-            origin: 'https://titaniumgym.azurewebsites.net'
-        }));
+        this.app.use((0, cors_1.default)(options));
     }
     routes() {
         this.app.use(index_1.default);

@@ -22,14 +22,11 @@ export class App {
 
   settings (): void {
     this.app.set('port', this.port)
-    this.app.use(cors(options))
   }
 
   middlewares (): void {
     this.app.use(express.json())
-    this.app.use(cors({
-      origin: 'https://titaniumgym.azurewebsites.net'
-    }))
+    this.app.use(cors(options))
   }
 
   routes (): void {
