@@ -31,9 +31,9 @@ class App {
     }
     routes() {
         this.app.use(index_1.default);
-        this.app.use('/rs-ne-gestion-de-personas/servicio-de-clientes/v1/clientes', clientes_1.default);
-        this.app.use('/rs-ne-gestion-de-personas/servicio-de-entrenadores/v1/entrenadores', entrenadores_1.default);
-        this.app.use('/rs-ne-gestion-de-personas/servicio-de-usuarios/v1/usuarios', usuarios_1.default);
+        this.app.use('/servicio-de-clientes/v1/clientes', clientes_1.default);
+        this.app.use('/servicio-de-entrenadores/v1/entrenadores', entrenadores_1.default);
+        this.app.use('/servicio-de-usuarios/v1/usuarios', usuarios_1.default);
     }
     async listen() {
         await this.app.listen(this.port);
