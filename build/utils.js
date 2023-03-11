@@ -10,7 +10,7 @@ const parseNombre = (stringFromRequest) => {
         flag = false;
         message = 'Nombre(s) inexistente o incorrecto';
     }
-    if (stringFromRequest.length < 2) {
+    if (stringFromRequest.length < 3) {
         flag = false;
         message = 'Nombre(s) tiene pocos caracteres';
     }
@@ -39,7 +39,7 @@ const parseApellido = (stringFromRequest) => {
         flag = false;
         message = 'Apellidos inexistente o incorrecto';
     }
-    if (stringFromRequest.length < 2) {
+    if (stringFromRequest.length < 3) {
         flag = false;
         message = 'Apellidos tiene pocos caracteres';
     }
