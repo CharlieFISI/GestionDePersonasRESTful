@@ -5,7 +5,7 @@ import clienteRouter from './routes/clientes'
 import entrenadorRouter from './routes/entrenadores'
 import usuarioRouter from './routes/usuarios'
 
-const allowedOrigins = ['192.168.0.123', 'https://titaniumgym.azurewebsites.net']
+const allowedOrigins = ['192.168.0.123:3000', 'https://titaniumgym.azurewebsites.net']
 const options: cors.CorsOptions = {
   origin: allowedOrigins
 }
